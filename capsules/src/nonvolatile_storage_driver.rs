@@ -106,7 +106,7 @@ impl Default for App {
 
 pub struct NonvolatileStorage<'a> {
     // The underlying physical storage device.
-    driver: &'a hil::nonvolatile_storage::NonvolatileStorage,
+    driver: &'a dyn hil::nonvolatile_storage::NonvolatileStorage,
     // Per-app state.
     apps: Grant<App>,
 
@@ -126,7 +126,7 @@ pub struct NonvolatileStorage<'a> {
 
     // Optional client for the kernel. Only needed if the kernel intends to use
     // this nonvolatile storage.
-    kernel_client: OptionalCell<&'static hil::nonvolatile_storage::NonvolatileStorageClient>,
+    kernel_client: OptionalCell<&'static dyn hil::nonvolatile_storage::NonvolatileStorageClient>,
     // Whether the kernel is waiting for a read/write.
     kernel_pending_command: Cell<bool>,
     // Whether the kernel wanted a read/write.
@@ -141,7 +141,7 @@ pub struct NonvolatileStorage<'a> {
 
 impl NonvolatileStorage<'a> {
     pub fn new(
-        driver: &'a hil::nonvolatile_storage::NonvolatileStorage,
+        driver: &'a dyn hil::nonvolatile_storage::NonvolatileStorage,
         grant: Grant<App>,
         userspace_start_address: usize,
         userspace_length: usize,
@@ -448,7 +448,7 @@ impl hil::nonvolatile_storage::NonvolatileStorageClient for NonvolatileStorage<'
 
 /// Provide an interface for the kernel.
 impl hil::nonvolatile_storage::NonvolatileStorage for NonvolatileStorage<'a> {
-    fn set_client(&self, client: &'static hil::nonvolatile_storage::NonvolatileStorageClient) {
+    fn set_client(&self, client: &'static dyn hil::nonvolatile_storage::NonvolatileStorageClient) {
         self.kernel_client.set(client);
     }
 

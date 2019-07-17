@@ -166,7 +166,7 @@ const AST_ADDRESS: StaticRef<AstRegisters> =
 
 pub struct Ast<'a> {
     registers: StaticRef<AstRegisters>,
-    callback: OptionalCell<&'a time::Client>,
+    callback: OptionalCell<&'a dyn time::Client>,
 }
 
 pub static mut AST: Ast<'static> = Ast {
@@ -175,9 +175,9 @@ pub static mut AST: Ast<'static> = Ast {
 };
 
 impl Controller for Ast<'a> {
-    type Config = &'static time::Client;
+    type Config = &'static dyn time::Client;
 
-    fn configure(&self, client: &'a time::Client) {
+    fn configure(&self, client: &'a dyn time::Client) {
         self.callback.set(client);
 
         pm::enable_clock(pm::Clock::PBD(PBDClock::AST));
@@ -206,7 +206,7 @@ impl Ast<'a> {
         regs.sr.is_set(Status::CLKBUSY)
     }
 
-    pub fn set_client(&self, client: &'a time::Client) {
+    pub fn set_client(&self, client: &'a dyn time::Client) {
         self.callback.set(client);
     }
 

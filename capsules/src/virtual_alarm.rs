@@ -11,7 +11,7 @@ pub struct VirtualMuxAlarm<'a, Alrm: Alarm> {
     when: Cell<u32>,
     armed: Cell<bool>,
     next: ListLink<'a, VirtualMuxAlarm<'a, Alrm>>,
-    client: OptionalCell<&'a time::Client>,
+    client: OptionalCell<&'a dyn time::Client>,
 }
 
 impl<A: Alarm> ListNode<'a, VirtualMuxAlarm<'a, A>> for VirtualMuxAlarm<'a, A> {
@@ -31,7 +31,7 @@ impl<Alrm: Alarm> VirtualMuxAlarm<'a, Alrm> {
         }
     }
 
-    pub fn set_client(&'a self, client: &'a time::Client) {
+    pub fn set_client(&'a self, client: &'a dyn time::Client) {
         self.mux.virtual_alarms.push_head(self);
         self.when.set(0);
         self.armed.set(false);

@@ -38,7 +38,7 @@ pub struct App {
 }
 
 pub struct AppFlash<'a> {
-    driver: &'a hil::nonvolatile_storage::NonvolatileStorage,
+    driver: &'a dyn hil::nonvolatile_storage::NonvolatileStorage,
     apps: Grant<App>,
     current_app: OptionalCell<AppId>,
     buffer: TakeCell<'static, [u8]>,
@@ -46,7 +46,7 @@ pub struct AppFlash<'a> {
 
 impl AppFlash<'a> {
     pub fn new(
-        driver: &'a hil::nonvolatile_storage::NonvolatileStorage,
+        driver: &'a dyn hil::nonvolatile_storage::NonvolatileStorage,
         grant: Grant<App>,
         buffer: &'static mut [u8],
     ) -> AppFlash<'a> {

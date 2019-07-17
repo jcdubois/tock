@@ -128,18 +128,18 @@ pub trait LTC294XClient {
 
 /// Implementation of a driver for the LTC294X coulomb counters.
 pub struct LTC294X<'a> {
-    i2c: &'a i2c::I2CDevice,
-    interrupt_pin: Option<&'a gpio::Pin>,
+    i2c: &'a dyn i2c::I2CDevice,
+    interrupt_pin: Option<&'a dyn gpio::Pin>,
     model: Cell<ChipModel>,
     state: Cell<State>,
     buffer: TakeCell<'static, [u8]>,
-    client: OptionalCell<&'static LTC294XClient>,
+    client: OptionalCell<&'static dyn LTC294XClient>,
 }
 
 impl LTC294X<'a> {
     pub fn new(
-        i2c: &'a i2c::I2CDevice,
-        interrupt_pin: Option<&'a gpio::Pin>,
+        i2c: &'a dyn i2c::I2CDevice,
+        interrupt_pin: Option<&'a dyn gpio::Pin>,
         buffer: &'static mut [u8],
     ) -> LTC294X<'a> {
         LTC294X {

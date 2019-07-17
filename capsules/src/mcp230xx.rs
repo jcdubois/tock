@@ -124,24 +124,24 @@ enum PinState {
 }
 
 pub struct MCP230xx<'a> {
-    i2c: &'a hil::i2c::I2CDevice,
+    i2c: &'a dyn hil::i2c::I2CDevice,
     state: Cell<State>,
     bank_size: u8,       // How many GPIO pins per bank (likely 8)
     number_of_banks: u8, // How many GPIO banks this extender has (likely 1 or 2)
     buffer: TakeCell<'static, [u8]>,
-    interrupt_pin_a: Option<&'static hil::gpio::Pin>,
-    interrupt_pin_b: Option<&'static hil::gpio::Pin>,
+    interrupt_pin_a: Option<&'static dyn hil::gpio::Pin>,
+    interrupt_pin_b: Option<&'static dyn hil::gpio::Pin>,
     interrupts_enabled: Cell<u32>, // Whether the pin interrupt is enabled
     interrupts_mode: Cell<u32>,    // What interrupt mode the pin is in
     identifier: Cell<usize>,
-    client: OptionalCell<&'static hil::gpio_async::Client>,
+    client: OptionalCell<&'static dyn hil::gpio_async::Client>,
 }
 
 impl MCP230xx<'a> {
     pub fn new(
-        i2c: &'a hil::i2c::I2CDevice,
-        interrupt_pin_a: Option<&'static hil::gpio::Pin>,
-        interrupt_pin_b: Option<&'static hil::gpio::Pin>,
+        i2c: &'a dyn hil::i2c::I2CDevice,
+        interrupt_pin_a: Option<&'static dyn hil::gpio::Pin>,
+        interrupt_pin_b: Option<&'static dyn hil::gpio::Pin>,
         buffer: &'static mut [u8],
         bank_size: u8,
         number_of_banks: u8,
