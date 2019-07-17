@@ -86,7 +86,7 @@ pub struct GpioPin {
     set: FieldValue<u32, pins::Register>,
     clear: FieldValue<u32, pins::Register>,
     client_data: Cell<usize>,
-    client: OptionalCell<&'static hil::gpio::Client>,
+    client: OptionalCell<&'static dyn hil::gpio::Client>,
 }
 
 impl GpioPin {

@@ -47,7 +47,7 @@ pub struct GPIOPin {
     pin: usize,
     pin_mask: u32,
     client_data: Cell<usize>,
-    client: OptionalCell<&'static hil::gpio::Client>,
+    client: OptionalCell<&'static dyn hil::gpio::Client>,
 }
 
 impl GPIOPin {

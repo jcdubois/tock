@@ -62,7 +62,7 @@ const RTC_BASE: StaticRef<RtcRegisters> =
 
 pub struct Rtc {
     registers: StaticRef<RtcRegisters>,
-    callback: OptionalCell<&'static time::Client>,
+    callback: OptionalCell<&'static dyn time::Client>,
 }
 
 pub static mut RTC: Rtc = Rtc::new();
@@ -132,7 +132,7 @@ impl Rtc {
         self.callback.map(|cb| cb.fired());
     }
 
-    pub fn set_client(&self, client: &'static time::Client) {
+    pub fn set_client(&self, client: &'static dyn time::Client) {
         self.callback.set(client);
     }
 

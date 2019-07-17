@@ -58,13 +58,13 @@ impl kernel::syscall::UserspaceKernelBoundary for NullSysCall {
         )
     }
 
-    unsafe fn fault_fmt(&self, _writer: &mut Write) {}
+    unsafe fn fault_fmt(&self, _writer: &mut dyn Write) {}
 
     unsafe fn process_detail_fmt(
         &self,
         _stack_pointer: *const usize,
         _state: &RvStoredState,
-        _writer: &mut Write,
+        _writer: &mut dyn Write,
     ) {
     }
 }

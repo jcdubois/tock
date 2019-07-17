@@ -89,7 +89,7 @@ pub struct Platform {
 impl kernel::Platform for Platform {
     fn with_driver<F, R>(&self, driver_num: usize, f: F) -> R
     where
-        F: FnOnce(Option<&kernel::Driver>) -> R,
+        F: FnOnce(Option<&dyn kernel::Driver>) -> R,
     {
         match driver_num {
             capsules::console::DRIVER_NUM => f(Some(self.console)),
@@ -124,7 +124,7 @@ pub unsafe fn setup_board(
     mx25r6435f: &Option<SpiMX25R6435FPins>,
     button_pins: &'static mut [(&'static nrf5x::gpio::GPIOPin, capsules::button::GpioMode)],
     app_memory: &mut [u8],
-    process_pointers: &'static mut [Option<&'static kernel::procs::ProcessType>],
+    process_pointers: &'static mut [Option<&'static dyn kernel::procs::ProcessType>],
     app_fault_response: kernel::procs::FaultResponse,
 ) {
     // Make non-volatile memory writable and activate the reset button

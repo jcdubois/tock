@@ -307,7 +307,7 @@ const TIM2_BASE: StaticRef<Tim2Registers> =
 pub struct Tim2<'a> {
     registers: StaticRef<Tim2Registers>,
     clock: Tim2Clock,
-    client: OptionalCell<&'a hil::time::Client>,
+    client: OptionalCell<&'a dyn hil::time::Client>,
     irqn: u32,
 }
 
@@ -335,7 +335,7 @@ impl Tim2<'a> {
         self.clock.disable();
     }
 
-    pub fn set_client(&self, client: &'a hil::time::Client) {
+    pub fn set_client(&self, client: &'a dyn hil::time::Client) {
         self.client.set(client);
     }
 
